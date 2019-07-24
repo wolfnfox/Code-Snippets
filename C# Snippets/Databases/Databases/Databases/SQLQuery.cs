@@ -27,6 +27,7 @@ namespace Databases
         public SQLQuery(string sqlquery, List<T> TObjectsIn, string tableName = null, CommandType? commandTypeIn = null)
         {
             sql = sqlquery;
+            dbTable = tableName;
             TObjects = TObjectsIn;
             commandType = commandTypeIn;
         }

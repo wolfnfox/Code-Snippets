@@ -11,7 +11,7 @@ namespace Databases.Tests
         {
             SQLQuery sqlQuery = new SQLQuery(null);
             Assert.Null(sqlQuery.sql);
-            Assert.Null(sqlQuery.TObjects);
+            Assert.Null(sqlQuery.dbTable);
             Assert.Null(sqlQuery.TObjects);
             Assert.Null(sqlQuery.commandType);
         }
