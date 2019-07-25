@@ -1,6 +1,0 @@
-{
-  "AppSettings": {
-    "DbProvider": "SQLite",
-    "ConnString": "DataSource=Database/app.db"
-  }
-}

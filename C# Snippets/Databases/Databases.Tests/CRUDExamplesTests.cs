@@ -6,5 +6,9 @@ namespace Databases.Tests
 {
     class CRUDExamplesTests
     {
+        public CRUDExamplesTests()
+        {
+
+        }
     }
 }

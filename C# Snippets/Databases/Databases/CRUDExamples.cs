@@ -20,9 +20,13 @@ namespace Databases
             {
                 _configuration = configuration;
                 _connectionString = _configuration[key];
-                FluentMapper.Initialize(config => {
-                    config.AddMap(new ExampleDBModel.ExampleDBModelMap());
-                });
+                var fluentMapperDictionary = FluentMapper.EntityMaps;
+                if (!fluentMapperDictionary.ContainsKey(typeof(ExampleDBModel)))
+                {
+                    FluentMapper.Initialize(config => {
+                        config.AddMap(new ExampleDBModel.ExampleDBModelMap());
+                    });
+                }
             }
 
             public List<ExampleDBModel> SelectAll()
@@ -150,9 +154,13 @@ namespace Databases
 
             public UsingCommonDbAccess(IConfiguration configuration, string key) : base(configuration, key)
             {
-                FluentMapper.Initialize(config => {
-                    config.AddMap(new ExampleDBModel.ExampleDBModelMap());
-                });
+                var fluentMapperDictionary = FluentMapper.EntityMaps;
+                if (!fluentMapperDictionary.ContainsKey(typeof(ExampleDBModel)))
+                {
+                    FluentMapper.Initialize(config => {
+                        config.AddMap(new ExampleDBModel.ExampleDBModelMap());
+                    });
+                }
             }
 
             public List<ExampleDBModel> SelectAllRecords()
