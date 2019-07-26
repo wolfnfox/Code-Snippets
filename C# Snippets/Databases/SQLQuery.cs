@@ -40,9 +40,9 @@ namespace Databases
         /// Use <see cref="CommandType.StoredProcedure"/> if the query <see cref="string"/> is a stored procedure.</para>
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="sqlquery"></param>
+        /// <param name="sqlquery">The SQL query <see cref="string"/>.</param>
         /// <param name="TObject"></param>
-        /// <param name="commandType"></param>
+        /// <param name="commandType">Specify the <see cref="CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
         /// <param name="dbTableName"></param>
         /// <param name="isBulk"></param>
         /// <param name="batchSize"></param>
@@ -57,6 +57,7 @@ namespace Databases
             this.dbTableName = dbTableName;
             this.isBulk = isBulk;
             this.batchSize = batchSize;
+            
         }
 
         /// <summary>
@@ -65,9 +66,9 @@ namespace Databases
         /// Parameters are passed in as a class <see cref="object"/> of <see cref="Type"/> T as an input parameter.<br />
         /// Use <see cref="CommandType.StoredProcedure"/> if the query <see cref="string"/> is a stored procedure.</para>
         /// </summary>
-        /// <param name="sqlquery"></param>
+        /// <param name="sqlquery">The SQL query <see cref="string"/>.</param>
         /// <param name="TObjects"></param>
-        /// <param name="commandType"></param>
+        /// <param name="commandType">Specify the <see cref="CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
         /// <param name="dbTableName"></param>
         /// <param name="isBulk"></param>
         /// <param name="batchSize"></param>
