@@ -1,46 +1,46 @@
 import logging, os, shutil, sys
 
-from Helpers import File
+from helpers import file
 
-def CreateDirectory(directory):
+def createdirectory(directory):
     '''Creates directory'''
-    if DirectoryExists(directory):
+    if directoryexists(directory):
         raise Exception(r'Directory already exists.')
     os.mkdir(directory)
     logging.info(r'Created directory: '+directory)
     return
 
-def Delete(directory,forcedelete=False):
-    if not DirectoryExists(directory):
+def delete(directory,forcedelete=False):
+    if not directoryexists(directory):
         raise Exception(r'Invalid directory.')
-    files = GetFiles(directory) 
+    files = getfiles(directory) 
     if (len(files) > 0) and not forcedelete:
         raise Exception(r'Directory is not empty.')
     else:
         for filename in files:
-            File.Delete(filename)
-        for subdirectory in GetDirectories(directory)[::-1]:
+            file.delete(filename)
+        for subdirectory in getdirectories(directory)[::-1]:
             os.rmdir(subdirectory)
             logging.info(r'Deleted directory: '+subdirectory)
     return
 
-def DirectoryExists(directory):
+def directoryexists(directory):
     if not isinstance(directory,str):
         raise ValueError('Invalid argument for <directory>.\nAccepted types: '+str(str)+'\nGot type: '+str(type(directory)))
     else:
         return os.path.isdir(directory)
 
-def GetDirectories(directory):
-    if not DirectoryExists(directory):
+def getdirectories(directory):
+    if not directoryexists(directory):
         raise Exception(r'Invalid directory.')
     directories = [directory]
-    for path, dirs, files in os.walk(directory):
+    for path, dirs, __ in os.walk(directory):
         for subdirectory in dirs:
             directories.append(os.path.join(path,subdirectory))
     return directories
 
-def GetFiles(directory,ext=None,filterby=None):
-    if not DirectoryExists(directory):
+def getfiles(directory,ext=None,filterby=None):
+    if not directoryexists(directory):
         raise Exception(r'Invalid directory.')
 
     filelist = []
@@ -59,14 +59,14 @@ def GetFiles(directory,ext=None,filterby=None):
     logging.info(r'Found '+str(len(files))+' file(s) in '+str(len(dirs))+' subdirectories.')
     return filelist
 
-# def Move(sourceDirectory,destDirecory,forceMove=False):
-#     if DirectoryExists(destDirecory):
+# def move(sourceDirectory,destDirecory,forceMove=False):
+#     if directoryexists(destDirecory):
 #         raise Exception(r'Destination directory already exists.')
 #     for path, dirs, files in os.walk(directory):
 #         for directory in dirs:
 #             newDirectory = directory.replace(path,destDirecory)
-#             if not DirectoryExists(newDirectory):
-#                 CreateDirectory(newDirectory)
+#             if not directoryexists(newDirectory):
+#                 createdirectory(newDirectory)
 #         for filename in files:
 #             newFilename = 1
 #     return

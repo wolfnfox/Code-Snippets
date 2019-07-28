@@ -1,21 +1,21 @@
 import pytest
 
-from Helpers import Directory
+from helpers import directory
 
-class Tests_DirectoryExists:
-    def test_DirectoryExists_None_Raises_ValueError(self):
+class Tests_directoryexists:
+    def test_directoryexists_None_raises_ValueError(self):
         with pytest.raises(ValueError):
-            Directory.DirectoryExists(None)
+            directory.directoryexists(None)
 
-    def test_DirectoryExists_Int_Raises_ValueError(self):
+    def test_directoryexists_int_raises_ValueError(self):
         with pytest.raises(ValueError):
-            Directory.DirectoryExists(9)
+            directory.directoryexists(9)
 
-    def test_DirectoryExists_Returns_False_If_File(self):
-        assert not Directory.DirectoryExists('./Helpers/File.py')
+    def test_directoryexists_returns_False_if_file(self):
+        assert not directory.directoryexists('./helpers/file.py')
 
-    def test_DirectoryExists_Returns_True_If_Directory_Exist(self):
-        assert Directory.DirectoryExists('./Tests')
+    def test_directoryexists_returns_True_if_directory_exist(self):
+        assert directory.directoryexists('./tests')
 
-    def test_DirectoryExists_Returns_False_If_Directory_Doesnt_Exist(self):
-        assert not Directory.DirectoryExists('./Temp')
+    def test_directoryexists_returns_False_if_directory_doesnt_exist(self):
+        assert not directory.directoryexists('./temp')

@@ -1,54 +1,54 @@
 import pytest
 
-from Helpers import File
+from helpers import file
 
-class Tests_FileExists:
-    def test_FileExists_None_Raises_ValueError(self):
+class Tests_fileexists:
+    def test_fileexists_None_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileExists(None)
+            file.fileexists(None)
 
-    def test_FileExists_Bool_Raises_ValueError(self):
+    def fileexists_bool_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileExists(True)
+            file.fileexists(True)
 
-    def test_FileExists_Int_Raises_ValueError(self):
+    def test_fileexists_int_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileExists(9)
+            file.fileexists(9)
     
-    def test_FileExists_Float_Raises_ValueError(self):
+    def test_fileexists_float_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileExists(9.9)
+            file.fileexists(9.9)
 
-    def test_FileExists_Returns_False_If_Directory(self):
-        assert not File.FileExists('./Tests')
+    def test_fileexists_returns_False_if_directory(self):
+        assert not file.fileexists('./tests')
 
-    def test_FileExists_Returns_True_If_File_Exist(self):
-        assert File.FileExists('./Helpers/File.py')
+    def test_fileexists_returns_True_if_fileexists(self):
+        assert file.fileexists('./helpers/file.py')
 
-    def test_FileExists_Returns_False_If_File_Doesnt_Exist(self):
-        assert not File.FileExists('./Helpers/Files.py')
+    def test_fileexists_returns_False_if_file_doesnt_exist(self):
+        assert not file.fileexists('./helpers/files.py')
 
-class Tests_FileSize:
-    def test_FileSize_None_Raises_ValueError(self):
+class Tests_filesize:
+    def test_filesize_None_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileSize(None)
+            file.filesize(None)
 
-    def test_FileExists_Bool_Raises_ValueError(self):
+    def test_filesize_bool_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileSize(True)
+            file.filesize(True)
 
-    def test_FileExists_Int_Raises_ValueError(self):
+    def test_filesize_int_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileSize(9)
+            file.filesize(9)
     
-    def test_FileExists_Float_Raises_ValueError(self):
+    def test_filesize_float_raises_ValueError(self):
         with pytest.raises(ValueError):
-            File.FileSize(9.9)
+            file.filesize(9.9)
 
-    def test_FileSize_Raises_FileNotFound_If_File_Doesnt_Exist(self):
+    def test_filesize_raises_FileNotFound_if_file_doesnt_exist(self):
         with pytest.raises(FileNotFoundError):
-            File.FileSize('./Tests/Data/Fake.docx')
+            file.filesize('./tests/data/fake.docx')
     
-    @pytest.mark.parametrize("filename,units,expected", [('./Tests/Data/Word.docx',None, 296), ('./Tests/Data/Word.docx','B', 302577), ('./Tests/Data/Word.docx','KB', 296), ('./Tests/Data/Word.docx','MB', 0.28856)])
-    def test_FileSize_Returns_FileSize_Number(self,filename,units,expected):
-        assert File.FileSize(filename,units) == expected
+    @pytest.mark.parametrize("filename,units,expected", [('./tests/data/word.docx',None, 296), ('./tests/data/word.docx','B', 302577), ('./tests/data/word.docx','KB', 296), ('./tests/data/word.docx','MB', 0.289)])
+    def test_filesize_returns_filesize(self,filename,units,expected):
+        assert file.filesize(filename,units) == expected
