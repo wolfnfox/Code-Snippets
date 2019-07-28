@@ -1,6 +1,6 @@
 import logging, os, shutil, sys
 
-import File
+from Helpers import File
 
 def CreateDirectory(directory):
     '''Creates directory'''
@@ -25,7 +25,10 @@ def Delete(directory,forcedelete=False):
     return
 
 def DirectoryExists(directory):
-    return os.path.exists(directory)
+    if not isinstance(directory,str):
+        raise ValueError('Invalid argument for <directory>.\nAccepted types: '+str(str)+'\nGot type: '+str(type(directory)))
+    else:
+        return os.path.isdir(directory)
 
 def GetDirectories(directory):
     if not DirectoryExists(directory):
@@ -56,14 +59,14 @@ def GetFiles(directory,ext=None,filterby=None):
     logging.info(r'Found '+str(len(files))+' file(s) in '+str(len(dirs))+' subdirectories.')
     return filelist
 
-def Move(sourceDirectory,destDirecory,forceMove=False):
-    if DirectoryExists(destDirecory):
-        raise Exception(r'Destination directory already exists.')
-    for path, dirs, files in os.walk(directory):
-        for directory in dirs:
-            newDirectory = directory.replace(path,destDirecory)
-            if not DirectoryExists(newDirectory):
-                CreateDirectory(newDirectory)
-        for filename in files:
-            newFilename = 
-    return
+# def Move(sourceDirectory,destDirecory,forceMove=False):
+#     if DirectoryExists(destDirecory):
+#         raise Exception(r'Destination directory already exists.')
+#     for path, dirs, files in os.walk(directory):
+#         for directory in dirs:
+#             newDirectory = directory.replace(path,destDirecory)
+#             if not DirectoryExists(newDirectory):
+#                 CreateDirectory(newDirectory)
+#         for filename in files:
+#             newFilename = 1
+#     return
