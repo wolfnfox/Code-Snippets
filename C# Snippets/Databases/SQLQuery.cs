@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Data.SqlClient;
+// Project References
 using Helpers;
 
 namespace Databases
@@ -12,12 +13,13 @@ namespace Databases
     /// <typeparam name="T">The type of the entity.</typeparam>
     public class SQLQuery<T> : IEquatable<SQLQuery<T>> where T : class
     {
-        public string sql { get; set; }
+        public string SQL { get; set; }
         public List<T> TObjects { get; set; } = null;
-        public CommandType? commandType { get; set; } = null;
-        public string dbTableName { get; set; } = null;         // NOT CURRENTLY USED by CommonDbAccess class
-        public bool isBulk { get; set; } = false;               // NOT CURRENTLY USED by CommonDbAccess class
-        public int batchSize { get; set; } = 0;                 // NOT CURRENTLY USED by CommonDbAccess class
+        public CommandType? CommandType { get; set; } = null;
+        public string DbTableName { get; set; } = null;         // NOT CURRENTLY USED by DapperbAccess class
+        public bool IsBulk { get; set; } = false;               // NOT CURRENTLY USED by DapperbAccess class
+        public int BatchSize { get; set; } = 0;                 // NOT CURRENTLY USED by DapperDbAccess class
+        public string ConnectionString { get; set; }            // NOT CURRENTLY USED by DapperDbAccess class
 
         /// <summary>
         /// <para>Initializes a new instance of <see cref="SQLQuery"/>.</para>
@@ -25,12 +27,12 @@ namespace Databases
         /// Use <see cref="CommandType.StoredProcedure"/> if the query <see cref="string"/> is a stored procedure.</para>
         /// </summary>
         /// <param name="sqlquery">The SQL query <see cref="string"/>.</param>
-        /// <param name="commandType">Specify the <see cref="CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
+        /// <param name="commandType">Specify the <see cref="System.Data.CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
         /// <exception cref="System.ArgumentNullException"> if SQL <see cref="string"/> is <see cref="null"/>.</exception>
         public SQLQuery(string sqlquery, CommandType? commandType = null)
         {
-            sql = sqlquery ?? throw new ArgumentNullException(nameof(sqlquery));
-            this.commandType = commandType;
+            SQL = sqlquery ?? throw new ArgumentNullException(nameof(sqlquery));
+            CommandType = commandType;
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace Databases
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="sqlquery">The SQL query <see cref="string"/>.</param>
         /// <param name="TObject"></param>
-        /// <param name="commandType">Specify the <see cref="CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
+        /// <param name="commandType">Specify the <see cref="System.Data.CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
         /// <param name="dbTableName"></param>
         /// <param name="isBulk"></param>
         /// <param name="batchSize"></param>
@@ -51,12 +53,12 @@ namespace Databases
         public SQLQuery(string sqlquery, T TObject, CommandType? commandType = null, string dbTableName = null, bool isBulk = false, int batchSize = 0)
         {
             if (TObject == null) throw new ArgumentNullException(nameof(TObject));
-            sql = sqlquery ?? throw new ArgumentNullException(nameof(sqlquery));
+            SQL = sqlquery ?? throw new ArgumentNullException(nameof(sqlquery));
             TObjects = new List<T> { TObject };
-            this.commandType = commandType;
-            this.dbTableName = dbTableName;
-            this.isBulk = isBulk;
-            this.batchSize = batchSize;
+            CommandType = commandType;
+            DbTableName = dbTableName;
+            IsBulk = isBulk;
+            BatchSize = batchSize;
             
         }
 
@@ -68,7 +70,7 @@ namespace Databases
         /// </summary>
         /// <param name="sqlquery">The SQL query <see cref="string"/>.</param>
         /// <param name="TObjects"></param>
-        /// <param name="commandType">Specify the <see cref="CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
+        /// <param name="commandType">Specify the <see cref="System.Data.CommandType"/>.<br />(e.g <see cref="CommandType.StoredProcedure"/>)</param>
         /// <param name="dbTableName"></param>
         /// <param name="isBulk"></param>
         /// <param name="batchSize"></param>
@@ -76,12 +78,12 @@ namespace Databases
         /// <exception cref="System.ArgumentNullException"> if passed in <see cref="object"/> is <see cref="null"/>.</exception>
         public SQLQuery(string sqlquery, List<T> TObjects, CommandType? commandType = null, string dbTableName = null, bool isBulk = false, int batchSize = 0)
         {
-            sql = sqlquery ?? throw new ArgumentNullException(nameof(sqlquery));
+            SQL = sqlquery ?? throw new ArgumentNullException(nameof(sqlquery));
             this.TObjects = TObjects ?? throw new ArgumentNullException(nameof(TObjects));
-            this.commandType = commandType;
-            this.dbTableName = dbTableName;
-            this.isBulk = isBulk;
-            this.batchSize = batchSize;
+            CommandType = commandType;
+            DbTableName = dbTableName;
+            IsBulk = isBulk;
+            BatchSize = batchSize;
         }
 
         /// <summary>
@@ -92,18 +94,18 @@ namespace Databases
         /// <returns></returns>
         public bool Equals(SQLQuery<T> other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
                 return false;
 
             if (ReferenceEquals(this, other))
                 return true;
 
-            return (sql.Equals(other.sql) 
-        &&  dbTableName.Equals(other.dbTableName)
+            return (SQL.Equals(other.SQL) 
+        &&  DbTableName.Equals(other.DbTableName)
         &&     TObjects.Equals(other.TObjects)
-        &&  commandType.Equals(other.commandType)
-        &&       isBulk.Equals(other.isBulk)
-        &&    batchSize.Equals(other.batchSize));
+        &&  CommandType.Equals(other.CommandType)
+        &&       IsBulk.Equals(other.IsBulk)
+        &&    BatchSize.Equals(other.BatchSize));
         }
 
         /// <summary>
@@ -129,7 +131,7 @@ namespace Databases
         /// <returns><see cref="int"/> HashCode</returns>
         public override int GetHashCode()
         {
-            return HashCodeGenerator.StartHash().Hash(sql).Hash(dbTableName).Hash(TObjects).Hash(commandType).Hash(isBulk).Hash(batchSize);
+            return HashCodeGenerator.StartHash().Hash(SQL).Hash(DbTableName).Hash(TObjects).Hash(CommandType).Hash(IsBulk).Hash(BatchSize);
         }
 
         /// <summary>

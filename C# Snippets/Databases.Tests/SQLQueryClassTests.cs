@@ -17,7 +17,7 @@ namespace Databases.Tests
         {
             string query = "Test";
             var sqlQuery = new SQLQuery(query);
-            Assert.Equal(sqlQuery.sql, query);
+            Assert.Equal(sqlQuery.SQL, query);
         }
 
         [Fact]
@@ -51,14 +51,14 @@ namespace Databases.Tests
         }
 
         [Fact]
-        public void Inequalitys_Operator_True_When_Comparing_SQLQuery_To_Null()
+        public void Inequality_Operator_True_When_Comparing_SQLQuery_To_Null()
         {
             var sqlQuery = new SQLQuery("Test");
             Assert.True(sqlQuery != null);
         }
 
         [Fact]
-        public void Inequalitys_Operator_False_When_Comparing_SQLQuery_To_Itself()
+        public void Inequality_Operator_False_When_Comparing_SQLQuery_To_Itself()
         {
             var sqlQuery = new SQLQuery("Test");
 #pragma warning disable CS1718 // Comparison made to same variable

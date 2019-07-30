@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Databases
 {
-    public class CommonDbAccess
+    public class DapperDbAccess
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
 
-        public CommonDbAccess(IConfiguration configuration, string key)
+        public DapperDbAccess(IConfiguration configuration, string key)
         {
             _configuration = configuration;
             _connectionString = _configuration[key];
@@ -55,7 +55,7 @@ namespace Databases
                     var result = new List<int>();
                     foreach (var sqlQuery in sqlQuerys)
                     {
-                        var response = dbconnection.Execute(sqlQuery.sql, sqlQuery.TObjects, transaction: transaction, commandType: sqlQuery.commandType);
+                        var response = dbconnection.Execute(sqlQuery.SQL, sqlQuery.TObjects, transaction: transaction, commandType: sqlQuery.CommandType);
                         result.Add(response);
                     }
                     transaction.Commit();
@@ -77,14 +77,14 @@ namespace Databases
                 var result = new List<T>();
                 if (sqlQuery.TObjects == null)
                 {
-                    var response = dbconnection.Query<T>(sqlQuery.sql, commandType: sqlQuery.commandType);
+                    var response = dbconnection.Query<T>(sqlQuery.SQL, commandType: sqlQuery.CommandType);
                     result.AddRange(response);
                 }
                 else
                 {
                     foreach (var TObject in sqlQuery.TObjects)
                     {
-                        var response = dbconnection.Query<T>(sqlQuery.sql, TObject, commandType: sqlQuery.commandType);
+                        var response = dbconnection.Query<T>(sqlQuery.SQL, TObject, commandType: sqlQuery.CommandType);
                         result.AddRange(response);
                     }
                 }
@@ -109,7 +109,7 @@ namespace Databases
                     var result = new List<int>();
                     foreach (var sqlQuery in sqlQuerys)
                     {
-                        var response = await dbconnection.ExecuteAsync(sqlQuery.sql, sqlQuery.TObjects, transaction: transaction, commandType: sqlQuery.commandType);
+                        var response = await dbconnection.ExecuteAsync(sqlQuery.SQL, sqlQuery.TObjects, transaction: transaction, commandType: sqlQuery.CommandType);
                         result.Add(response);
                     }
                     transaction.Commit();
@@ -131,14 +131,14 @@ namespace Databases
                 var result = new List<T>();
                 if (sqlQuery.TObjects == null)
                 {
-                    var response = await dbconnection.QueryAsync<T>(sqlQuery.sql, commandType: sqlQuery.commandType);
+                    var response = await dbconnection.QueryAsync<T>(sqlQuery.SQL, commandType: sqlQuery.CommandType);
                     result.AddRange(response);
                 }
                 else
                 {
                     foreach (var TObject in sqlQuery.TObjects)
                     {
-                        var response = await dbconnection.QueryAsync<T>(sqlQuery.sql, TObject, commandType: sqlQuery.commandType);
+                        var response = await dbconnection.QueryAsync<T>(sqlQuery.SQL, TObject, commandType: sqlQuery.CommandType);
                         result.AddRange(response);
                     }
                 }

@@ -141,15 +141,15 @@ namespace Databases
             }
         }
 
-        public class UsingCommonDbAccess : CommonDbAccess
+        public class UsingCommonDbAccess : DapperDbAccess
         {
-            private static string _deleteQuery = @"DELETE FROM [dbo].[ExampleDBModel]
+            private static readonly string _deleteQuery = @"DELETE FROM [dbo].[ExampleDBModel]
                                                     WHERE [Currently Employed] = @CurrentlyEmployed";
-            private static string _insertQuery = @"INSERT INTO [dbo].[ExampleDBModel]
+            private static readonly string _insertQuery = @"INSERT INTO [dbo].[ExampleDBModel]
                                                           ([Name],[DoB],[Office Location],[Currently Employed],[Salary])
                                                    VALUES (@Name, @DoB @OfficeLocation, @CurrentlyEmployed, @Salary)";
-            private static string _selectQuery = @"SELECT * FROM [dbo].[ExampleDBModel]";
-            private static string _updateQuery = @"UPDATE INTO [dbo].[ExampleDBModel]
+            private static readonly string _selectQuery = @"SELECT * FROM [dbo].[ExampleDBModel]";
+            private static readonly string _updateQuery = @"UPDATE INTO [dbo].[ExampleDBModel]
                                                     WHERE [ID] = @ID";
 
             public UsingCommonDbAccess(IConfiguration configuration, string key) : base(configuration, key)
@@ -165,45 +165,47 @@ namespace Databases
 
             public List<ExampleDBModel> SelectAllRecords()
             {
-                return base.Select(new SQLQuery<ExampleDBModel>(_selectQuery));
+                return Select(new SQLQuery<ExampleDBModel>(_selectQuery));
             }
 
             public int Insert(ExampleDBModel exampleDBModel)
             {
-                return base.Insert(new SQLQuery<ExampleDBModel>(_insertQuery, exampleDBModel));
+                return Insert(new SQLQuery<ExampleDBModel>(_insertQuery, exampleDBModel));
             }
 
             public int Insert(List<ExampleDBModel> exampleDBModels)
             {
-                return base.Insert(new SQLQuery<ExampleDBModel>(_insertQuery, exampleDBModels));
+                return Insert(new SQLQuery<ExampleDBModel>(_insertQuery, exampleDBModels));
             }
 
             public int Delete(ExampleDBModel exampleDBModel)
             {
-                return base.Delete(new SQLQuery<ExampleDBModel>(_deleteQuery, exampleDBModel));
+                return Delete(new SQLQuery<ExampleDBModel>(_deleteQuery, exampleDBModel));
             }
 
             public int Delete(List<ExampleDBModel> exampleDBModels)
             {
-                return base.Delete(new SQLQuery<ExampleDBModel>(_deleteQuery, exampleDBModels));
+                return Delete(new SQLQuery<ExampleDBModel>(_deleteQuery, exampleDBModels));
             }
 
             public int Update(ExampleDBModel exampleDBModel)
             {
-                return base.Update(new SQLQuery<ExampleDBModel>(_updateQuery, exampleDBModel));
+                return Update(new SQLQuery<ExampleDBModel>(_updateQuery, exampleDBModel));
             }
 
             public int Update(List<ExampleDBModel> exampleDBModels)
             {
-                return base.Update(new SQLQuery<ExampleDBModel>(_updateQuery, exampleDBModels));
+                return Update(new SQLQuery<ExampleDBModel>(_updateQuery, exampleDBModels));
             }
 
             public List<int> DeleteAndInsert(List<ExampleDBModel> deleteRows, List<ExampleDBModel> insertRows)
             {
-                List<SQLQuery<ExampleDBModel>> sqlQueries = new List<SQLQuery<ExampleDBModel>>();
-                sqlQueries.Add(new SQLQuery<ExampleDBModel>(_deleteQuery, deleteRows));
-                sqlQueries.Add(new SQLQuery<ExampleDBModel>(_insertQuery, insertRows));
-                return base.Execute(sqlQueries);
+                var sqlQueries = new List<SQLQuery<ExampleDBModel>>
+                {
+                    new SQLQuery<ExampleDBModel>(_deleteQuery, deleteRows),
+                    new SQLQuery<ExampleDBModel>(_insertQuery, insertRows)
+                };
+                return Execute(sqlQueries);
             }
         }
     }

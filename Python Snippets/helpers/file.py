@@ -30,7 +30,7 @@ def copy(fromfilename,tofilename=None,overwrite=False):
         shutil.copy2(fromfilename,tofilename)
     else:
         if fileexists(tofilename):
-            move(tofilename,tofilename,overwrite)
+            move(fromfilename,tofilename,overwrite)
         else:
             shutil.copy2(fromfilename,tofilename)
     logging.info('Copied file: '+str(fromfilename))
@@ -145,6 +145,7 @@ def _incrementfilename(filename):
     return filename
 
 def _readfile(filename,options,encoding=None):
+    '''Private function for reading a file in full.'''
     if encoding:
         with open(filename,options,encoding) as fopen:
             data = fopen.read()
@@ -154,6 +155,7 @@ def _readfile(filename,options,encoding=None):
     return data
 
 def _writefile(data,filename,options,encoding=None):
+    '''Private function for wrapping io.open'''
     if encoding:
         with open(filename,options,encoding) as fopen:
             fopen.write(data)
