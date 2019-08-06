@@ -2,6 +2,28 @@ import os, pytest, shutil
 
 from helpers import file
 
+class Tests_append_all_text:
+    @pytest.mark.parametrize('text,filename,encoding',
+    [(None,None,None),
+     ('test',None,None),
+     ('test','test.txt',None)])
+    def test_append_all_text_raises_ValueError(self,text,filename,encoding):
+        with pytest.raises(ValueError):
+            file.append_all_text(text,filename,encoding)
+    
+    def test_append_all_text_raises_FileNotFoundError(self):
+        with pytest.raises(FileNotFoundError):
+            file.append_all_text('test','fake.txt')
+
+    def test_append_all_text_writes_text_to_file(self):
+        with open('./tests/data/test.txt','wt') as fopen:
+            fopen.write('test')
+        file.append_all_text('test','./tests/data/test.txt')
+        with open('./tests/data/test.txt','rt') as fopen:
+            data = fopen.read()
+        os.remove('./tests/data/test.txt')
+        assert data == 'testtest'
+
 class Tests_copy:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
     def test_copy_nonstr_raises_ValueError(self,filename):
@@ -79,6 +101,43 @@ class Tests_getextension:
     @pytest.mark.parametrize('filename,expected',[('test.pdf','.pdf'),('testfile',''),('C:\test','')])
     def test_getextension_returns_extension(self,filename,expected):
         assert file.getextension(filename) == expected
+
+class Tests_read_all_bytes:
+    @pytest.mark.parametrize('filename',[None,True,6,3.7])
+    def test_read_all_bytes_raises_ValueError(self,filename):
+        with pytest.raises(ValueError):
+            file.read_all_bytes(filename)
+    
+    def test_read_all_bytes_raises_FileNotFoundError(self):
+        with pytest.raises(FileNotFoundError):
+            file.read_all_bytes('fake.txt')
+
+    def test_read_all_bytes_reads_bytes(self):
+        with open('./tests/data/test.txt','wb') as fopen:
+            fopen.write(b'test')
+        file.read_all_bytes('./tests/data/test.txt')
+        with open('./tests/data/test.txt','rb') as fopen:
+            data = fopen.read()
+        os.remove('./tests/data/test.txt')
+        assert data == b'test'
+
+class Tests_read_all_text:
+    @pytest.mark.parametrize('filename,encoding',
+    [(None,'utf-8'),(True,'utf-8'),(6,'utf-8'),(3.7,'utf-8'),('test.txt',None)])
+    def test_read_all_text_raises_ValueError(self,filename,encoding):
+        with pytest.raises(ValueError):
+            file.read_all_text(filename,encoding)
+    
+    def test_read_all_text_raises_FileNotFoundError(self):
+        with pytest.raises(FileNotFoundError):
+            file.read_all_text('fake.txt')
+
+    def test_read_all_text_reads_text(self):
+        with open('./tests/data/test.txt','wt') as fopen:
+            fopen.write('test')
+        data = file.read_all_text('./tests/data/test.txt')
+        os.remove('./tests/data/test.txt')
+        assert data == 'test'
 
 class Tests_incrementfilename:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])

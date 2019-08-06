@@ -1,17 +1,15 @@
 import logging, os, shutil, sys
 import numpy
 
-def append_all_text(text,filename,encoding=r'utf-8',overwrite=True):
+def append_all_text(text,filename,encoding=r'utf-8'):
     if not isinstance(text,str):
         raise ValueError('Invalid argument for <text>.\nAccepted types: '+str(str)+'\nGot type: '+str(type(text)))
     if not isinstance(filename,str):
         raise ValueError('Invalid argument for <filename>.\nAccepted types: '+str(str)+'\nGot type: '+str(type(filename)))
     if not isinstance(encoding,str):
         raise ValueError('Invalid argument for <encoding>.\nAccepted types: '+str(str)+'\nGot type: '+str(type(encoding)))
-    if not isinstance(overwrite,bool):
-        raise ValueError('Invalid argument for <overwrite>.\nAccepted types: '+str(bool)+'\nGot type: '+str(type(overwrite)))
-    if fileexists(filename) and not overwrite:
-        raise FileExistsError()
+    if not fileexists(filename):
+        raise FileNotFoundError()
     return _writefile(text,filename,'at',encoding)
 
 def copy(fromfilename,tofilename=None,overwrite=False):
@@ -147,7 +145,7 @@ def _incrementfilename(filename):
 def _readfile(filename,options,encoding=None):
     '''Private function for reading a file in full.'''
     if encoding:
-        with open(filename,options,encoding) as fopen:
+        with open(filename,options,encoding=encoding) as fopen:
             data = fopen.read()
     else:
         with open(filename,options) as fopen:
@@ -157,7 +155,7 @@ def _readfile(filename,options,encoding=None):
 def _writefile(data,filename,options,encoding=None):
     '''Private function for wrapping io.open'''
     if encoding:
-        with open(filename,options,encoding) as fopen:
+        with open(filename,options,encoding=encoding) as fopen:
             fopen.write(data)
     else:
         with open(filename,options) as fopen:
