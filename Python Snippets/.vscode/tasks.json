@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "GeneratePytestCoverage",
+            "label": "Generate Pytest Coverage Report",
             "type": "shell",
-            "command": "generatecovreport.bat"
+            "command": "generate_coverage_report.bat"
         }
     ]
 }
