@@ -4,13 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Generate Coverage Report",
+            "label": "GeneratePytestCoverage",
             "type": "shell",
-            "command": "pytest --cov-report xml:cov.xml --cov=myproj tests/",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "command": "generatecovreport.bat"
         }
     ]
 }
