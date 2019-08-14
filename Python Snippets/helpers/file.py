@@ -1,4 +1,4 @@
-import logging, os, shutil, sys
+import logging, os, shutil
 import numpy
 
 def append_all_text(text,filename,encoding=r'utf-8'):
