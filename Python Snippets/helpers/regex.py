@@ -1,4 +1,3 @@
-import logging
 import re
 
 # Online tool for testing regular expressions
@@ -7,12 +6,14 @@ import re
 windows_drive_letter = re.compile(r'^([a-zA-Z]:)')
 legal_filename_chars = re.compile(r'[\w \.\{\}\[\]\(\)\-\\\/]')
 illegal_filename_chars = re.compile(r'[^\w \.\{\}\[\]\(\)\-\\\/]')
+legal_path_chars = re.compile(r'[\w \.\{\}\[\]\(\)\-]')
+illegal_path_chars = re.compile(r'[^\w \.\{\}\[\]\(\)\-]')
 
 legal_url_chars = re.compile(r'[a-zA-Z0-9\-\_\.\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]')
 illegal_url_chars = re.compile(r'[^a-zA-Z0-9\-\_\.\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]')
 
 email_address = re.compile(r'\b[\w\.\'\-]{1,64}\@[\w\.\'\-]{1,184}(?:\.[a-zA-Z]{2,4})\b')
-legal_http_url = re.compile(r'\b(?:https?:\/\/)?(?:www.)?(?:[a-zA-Z0-9\-\_\.\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]+)')
+http_url = re.compile(r'\b(?:https?:\/\/)?(?:www.)?(?:[a-zA-Z0-9\-\_\.\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]+)')
 
 short_date = re.compile(r'\b(?:\d|\d{2})[ \.\-\\\/]\d{2}[ \.\-\\\/]\d{2}(?:\d{2})?\b')
 long_date = re.compile(r'\b(?:\d|\d{2}) ?(?:(?:[sS][tT])|(?:[nN][dD])|(?:[rR][dD])|(?:[tT][hH]))? ?(?:[A-Z][a-zA-Z]{2,8}) ?\d{2}(?:\d{2})?\b')
