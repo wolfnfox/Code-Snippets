@@ -6,7 +6,7 @@ def binary(searchlist,item,order='asc',lb=None,ub=None):
     if (lb is None) or (ub is None):
         lb, ub = 0, len(searchlist)-1
     if (ub > lb):
-        mid = (ub-lb)//2
+        mid = int(numpy.ceil((ub-lb)/2)) + lb
         if searchlist[mid] == item:
             return mid
         if ((searchlist[mid] > item) and order =='asc') or\
