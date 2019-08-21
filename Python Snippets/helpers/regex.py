@@ -4,10 +4,10 @@ import re
 # https://regex101.com/ or https://regexr.com/
 
 windows_drive_letter = re.compile(r'^([a-zA-Z]:)')
-legal_filename_chars = re.compile(r'[\w \.\{\}\[\]\(\)\-\\\/]')
-illegal_filename_chars = re.compile(r'[^\w \.\{\}\[\]\(\)\-\\\/]')
-legal_path_chars = re.compile(r'[\w \.\{\}\[\]\(\)\-]')
-illegal_path_chars = re.compile(r'[^\w \.\{\}\[\]\(\)\-]')
+legal_basefilename_chars = re.compile(r'[\w \.\{\}\[\]\(\)\-]')
+illegal_basefilename_chars = re.compile(r'[^\w \.\{\}\[\]\(\)\-]')
+legal_path_chars = re.compile(r'[\w \.\{\}\[\]\(\)\-\\\/]')
+illegal_path_chars = re.compile(r'[^\w \.\{\}\[\]\(\)\-\\\/]')
 
 legal_url_chars = re.compile(r'[a-zA-Z0-9\-\_\.\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]')
 illegal_url_chars = re.compile(r'[^a-zA-Z0-9\-\_\.\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]')
