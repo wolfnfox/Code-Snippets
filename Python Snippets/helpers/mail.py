@@ -121,7 +121,7 @@ class MailReceiver():
         return mailids
 
     def _setup_connection_type(self):
-        if self.__emailsettings['IMAP Settings']['SSL']:
+        if self._emailsettings['IMAP Settings']['SSL']:
             self.imapconn = imaplib.IMAP4_SSL(self._emailsettings['IMAP Settings']['Host'],self._emailsettings['IMAP Settings']['Port'])
         return True
 
@@ -178,7 +178,7 @@ class MailSender():
         return
     
     def __del__(self):
-        self.disconnect(refresh=False)
+        self.disconnect()
         return
 
     def connect(self):
@@ -186,17 +186,15 @@ class MailSender():
             self._setup_connection_type()
             if self._emailsettings['SMTP Settings']['TLS']:
                 self.smtpconn.starttls()
-            resp = self.smtpconn.login(self._emailsettings['Username'], self._emailsettings['Password'])
+            resp = self.smtpconn.login(self._emailsettings['Username'],self._emailsettings['Password'])
             if ('Authentication successful' in str(resp[1])):
                 self._connected = True
         return self._connected
 
-    def disconnect(self,refresh=True):
+    def disconnect(self):
         if self._connected:
             resp = self.smtpconn.quit()
             if ('Service closing transmission channel' in str(resp[1])):
-                if refresh:
-                    self._setup_connection_type()
                 self._connected = False
         return not self._connected
 
@@ -224,9 +222,9 @@ class MailSender():
         return msg
 
     def _setup_connection_type(self):
-        if self.__emailsettings['SMTP Settings']['TLS']:
+        if self._emailsettings['SMTP Settings']['TLS']:
             self.smtpconn = smtplib.SMTP(self._emailsettings['SMTP Settings']['Host'],self._emailsettings['SMTP Settings']['Port'])
-        if self.__emailsettings['SMTP Settings']['SSL']:
+        if self._emailsettings['SMTP Settings']['SSL']:
             self.smtpconn = smtplib.SMTP_SSL(self._emailsettings['SMTP Settings']['Host'],self._emailsettings['SMTP Settings']['Port'])
         return True
 

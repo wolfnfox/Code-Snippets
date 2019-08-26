@@ -1,0 +1,16 @@
+{
+    "IMAP Settings": {
+        "Host": "localhost",
+        "Port": 143,
+        "SSL": true,
+        "TLS": false
+    },
+    "SMTP Settings": {
+        "Host": "localhost",
+        "Port": 587,
+        "SSL": true,
+        "TLS": false
+    },
+    "Username": "mailme@localhost",
+    "Password": "password123"
+}
