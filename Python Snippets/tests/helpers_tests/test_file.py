@@ -7,15 +7,15 @@ class Tests_append_all_text:
     [(None,None,None),
      ('test',None,None),
      ('test','test.txt',None)])
-    def test_append_all_text_raises_ValueError(self,text,filename,encoding):
+    def test_non_str_raises_ValueError(self,text,filename,encoding):
         with pytest.raises(ValueError):
             file.append_all_text(text,filename,encoding)
     
-    def test_append_all_text_raises_FileNotFoundError(self):
+    def test_raises_FileNotFoundError(self):
         with pytest.raises(FileNotFoundError):
             file.append_all_text('test','fake.txt')
 
-    def test_append_all_text_writes_text_to_file(self):
+    def test_writes_text_to_file(self):
         with open('./tests/data/test.txt','wt') as fopen:
             fopen.write('test')
         file.append_all_text('test','./tests/data/test.txt')
@@ -26,21 +26,21 @@ class Tests_append_all_text:
 
 class Tests_copy:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
-    def test_copy_nonstr_raises_ValueError(self,filename):
+    def test_non_str_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
             file.copy(filename)
     
-    def test_copy_raises_FileNotFoundError(self):
+    def test_raises_FileNotFoundError(self):
         with pytest.raises(FileNotFoundError):
             file.copy('./tests/data/fake.docx')
 
     @pytest.mark.parametrize('filename,newfilename,expected', [('./tests/data/word.docx',None,'./tests/data/word(1).docx'),('./tests/data/word.docx','./tests/data/word(new).docx','./tests/data/word(new).docx')])
-    def test_copy_filename_returns_newfilename(self,filename,newfilename,expected):
+    def test_copying_filename_returns_newfilename(self,filename,newfilename,expected):
         newfilename = file.copy(filename,newfilename)
         os.remove(newfilename)
         assert newfilename == expected
 
-    def test_copy_filename_overwrites_filename(self):
+    def test_copying_filename_overwrites_filename(self):
         shutil.copy2('./tests/data/word.docx','./tests/data/word-copy.docx')
         newfilename = file.copy('./tests/data/word-copy.docx',overwrite=True)
         os.remove(newfilename)
@@ -48,16 +48,16 @@ class Tests_copy:
 
 class Tests_delete:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
-    def test_delete_nonstr_raises_ValueError(self,filename):
+    def test_non_str_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
             file.delete(filename)
 
     @pytest.mark.parametrize('filename', [('./tests/data/fake.docx','./tests/data/temp')])
-    def test_delete_raises_FileNotFoundError(self,filename):
+    def test_raises_FileNotFoundError(self,filename):
         with pytest.raises(FileNotFoundError):
             file.delete('./tests/data/fake.docx')
 
-    def test_delete_filename(self):
+    def test_deletes_filename(self):
         filename = './tests/data/temp.txt'
         with open(filename,'wt') as fopen:
             fopen.write('test')
@@ -65,54 +65,54 @@ class Tests_delete:
 
 class Tests_fileexists:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
-    def test_fileexists_nonstr_raises_ValueError(self,filename):
+    def test_non_str_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
             file.fileexists(None)
 
-    def test_fileexists_returns_False_if_directory(self):
+    def test_returns_False_if_directory(self):
         assert not file.fileexists('./tests')
 
-    def test_fileexists_returns_True_if_fileexists(self):
+    def test_returns_True_if_fileexists(self):
         assert file.fileexists('./helpers/file.py')
 
-    def test_fileexists_returns_False_if_file_doesnt_exist(self):
+    def test_returns_False_if_file_doesnt_exist(self):
         assert not file.fileexists('./helpers/files.py')
 
 class Tests_filesize:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
-    def test_filesize_nonstr_raises_ValueError(self,filename):
+    def test_non_str_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
             file.filesize(filename)
 
-    def test_filesize_raises_FileNotFound_if_file_doesnt_exist(self):
+    def test_raises_FileNotFound_if_file_doesnt_exist(self):
         with pytest.raises(FileNotFoundError):
             file.filesize('./tests/data/fake.docx')
     
     @pytest.mark.parametrize('filename,units,expected', [('./tests/data/word.docx',None, 296), ('./tests/data/word.docx','B', 302577), ('./tests/data/word.docx','KB', 296), ('./tests/data/word.docx','MB', 0.289)])
-    def test_filesize_returns_filesize(self,filename,units,expected):
+    def test_returns_filesize(self,filename,units,expected):
         assert file.filesize(filename,units) == expected
 
-class Tests_getextension:
+class Tests_get_extension:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
-    def test_getextension_nonstr_raises_ValueError(self,filename):
+    def test_non_str_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
-            file.getextension(filename)
+            file.get_extension(filename)
 
     @pytest.mark.parametrize('filename,expected',[('test.pdf','.pdf'),('testfile',''),('C:\test','')])
-    def test_getextension_returns_extension(self,filename,expected):
-        assert file.getextension(filename) == expected
+    def test_returns_extension(self,filename,expected):
+        assert file.get_extension(filename) == expected
 
 class Tests_read_all_bytes:
     @pytest.mark.parametrize('filename',[None,True,6,3.7])
-    def test_read_all_bytes_raises_ValueError(self,filename):
+    def test_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
             file.read_all_bytes(filename)
     
-    def test_read_all_bytes_raises_FileNotFoundError(self):
+    def test_raises_FileNotFoundError(self):
         with pytest.raises(FileNotFoundError):
             file.read_all_bytes('fake.txt')
 
-    def test_read_all_bytes_reads_bytes(self):
+    def test_reads_bytes(self):
         with open('./tests/data/test.txt','wb') as fopen:
             fopen.write(b'test')
         file.read_all_bytes('./tests/data/test.txt')
@@ -124,27 +124,27 @@ class Tests_read_all_bytes:
 class Tests_read_all_text:
     @pytest.mark.parametrize('filename,encoding',
     [(None,'utf-8'),(True,'utf-8'),(6,'utf-8'),(3.7,'utf-8'),('test.txt',None)])
-    def test_read_all_text_raises_ValueError(self,filename,encoding):
+    def test_non_str_raises_ValueError(self,filename,encoding):
         with pytest.raises(ValueError):
             file.read_all_text(filename,encoding)
     
-    def test_read_all_text_raises_FileNotFoundError(self):
+    def test_raises_FileNotFoundError(self):
         with pytest.raises(FileNotFoundError):
             file.read_all_text('fake.txt')
 
-    def test_read_all_text_reads_text(self):
+    def test_reads_text(self):
         with open('./tests/data/test.txt','wt') as fopen:
             fopen.write('test')
         data = file.read_all_text('./tests/data/test.txt')
         os.remove('./tests/data/test.txt')
         assert data == 'test'
 
-class Tests_incrementfilename:
+class Tests_increment_filename:
     @pytest.mark.parametrize('filename', [(None,True,9,9.9)])
-    def test_getextension_nonstr_raises_ValueError(self,filename):
+    def test_non_str_raises_ValueError(self,filename):
         with pytest.raises(ValueError):
-            file._incrementfilename(filename)
+            file._increment_filename(filename)
 
     @pytest.mark.parametrize('filename,expected', [('./tests/data/fake.docx','./tests/data/fake.docx'),('./tests/data/word.docx','./tests/data/word(1).docx')])
-    def test_incrementfilename_returns_newfilename(self,filename,expected):
-        assert file._incrementfilename(filename) == expected
+    def test_returns_newfilename(self,filename,expected):
+        assert file._increment_filename(filename) == expected
