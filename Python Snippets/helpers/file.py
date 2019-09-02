@@ -24,7 +24,7 @@ def copy(fromfilename,tofilename=None,overwrite=False):
     if (not tofilename):
         tofilename = fromfilename
     if (not overwrite):
-        tofilename = _incrementfilename(tofilename)
+        tofilename = _increment_filename(tofilename)
         shutil.copy2(fromfilename,tofilename)
     else:
         if fileexists(tofilename):
@@ -66,10 +66,10 @@ def filesize(filename,units=None):
         if (filesize > (1024**2)):
             filesize = int(numpy.ceil(filesize/(1024**2)))
         else:
-            filesize = numpy.ceil((302577*1000**2)/(1024**2)/(1000))/1000
+            filesize = numpy.ceil((filesize*1000**2)/(1024**2)/(1000))/1000
     return filesize
 
-def getextension(filename):
+def get_extension(filename):
     if not isinstance(filename,str):
         raise ValueError('Invalid argument for <filename>.\nAccepted types: '+str(str)+'\nGot type: '+str(type(filename)))
     return os.path.splitext(filename)[-1]
@@ -128,19 +128,19 @@ def write_all_text(text,filename,encoding=r'utf-8',overwrite=True):
         raise FileExistsError()
     return _writefile(text,filename,'wt',encoding)
 
-def _incrementfilename(filename):
+def _increment_filename(filename):
     '''Private function to generate incremented filename if the input <filename> already exists.\n
        Otherwise, returns the <filename> unaltered.'''
     if not fileexists(filename):
         return filename
     else:
         i = 1
-        ext = getextension(filename)
-        filename = filename.replace(ext,'('+str(i)+')'+ext)
-        while fileexists(filename):
+        ext = get_extension(filename)
+        newfilename = filename.replace(ext,'('+str(i)+')'+ext)
+        while fileexists(newfilename):
             i += 1
-            filename = filename.replace(ext,'('+str(i)+')'+ext)
-    return filename
+            newfilename = filename.replace(ext,'('+str(i)+')'+ext)
+    return newfilename
 
 def _readfile(filename,options,encoding=None):
     '''Private function for reading a file in full.'''

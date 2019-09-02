@@ -2,24 +2,24 @@ import logging, os, shutil, sys
 
 from helpers import file
 
-def createdirectory(directory):
+def create_directory(directory):
     '''Creates directory'''
     if directoryexists(directory):
-        raise Exception(r'Directory already exists.')
+        raise Exception(r'Directory already exists')
     os.mkdir(directory)
     logging.info(r'Created directory: '+directory)
     return
 
 def delete(directory,forcedelete=False):
     if not directoryexists(directory):
-        raise Exception(r'Invalid directory.')
-    files = getfiles(directory) 
+        raise Exception(r'Invalid directory')
+    files = get_files(directory) 
     if (len(files) > 0) and not forcedelete:
-        raise Exception(r'Directory is not empty.')
+        raise Exception(r'Directory is not empty')
     else:
         for filename in files:
             file.delete(filename)
-        for subdirectory in getdirectories(directory)[::-1]:
+        for subdirectory in get_directories(directory)[::-1]:
             os.rmdir(subdirectory)
             logging.info(r'Deleted directory: '+subdirectory)
     return
@@ -30,21 +30,23 @@ def directoryexists(directory):
     else:
         return os.path.isdir(directory)
 
-def getdirectories(directory):
+def get_directories(directory):
     if not directoryexists(directory):
-        raise Exception(r'Invalid directory.')
+        raise Exception(r'Invalid directory')
     directories = [directory]
     for path, dirs, __ in os.walk(directory):
         for subdirectory in dirs:
             directories.append(os.path.join(path,subdirectory))
     return directories
 
-def getfiles(directory,ext=None,filterby=None):
+def get_files(directory,ext=None,filterby=None):
     if not directoryexists(directory):
-        raise Exception(r'Invalid directory.')
+        raise Exception(r'Invalid directory')
 
     filelist = []
+    numdirs = 0
     for path, dirs, files in os.walk(directory):
+        numdirs += len(dirs)
         for filename in files:
             if filterby is not None:
                 if filterby not in filename:
@@ -52,11 +54,11 @@ def getfiles(directory,ext=None,filterby=None):
             
             if ext is not None:
                 fileext = os.path.splitext(filename)[1]
-                if fileext.lower() is not ext:
+                if fileext.lower() != ext:
                     continue # Skip if file extension doesn't match
             
             filelist.append(os.path.join(path,filename))
-    logging.info(r'Found '+str(len(files))+' file(s) in '+str(len(dirs))+' subdirectories.')
+    logging.info(r'Found '+str(len(filelist))+' file(s) in '+str(numdirs)+' subdirectories')
     return filelist
 
 # def move(sourceDirectory,destDirecory,forceMove=False):
